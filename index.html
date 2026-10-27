@@ -20,11 +20,11 @@
 fbq('init', '1516166836561884'); fbq('track', 'PageView');
 </script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=Cormorant+Garamond:wght@600&display=swap">
+
+
 <style>
-/* 소재 D와 같은 색: 남색 바탕 · 금색 강조 · 종이색 신청창 */
-:root{--bg:#0c1424;--bg2:#111b30;--gold:#c9a96a;--gold2:#e0c48e;--line:#2a3550;--ink:#f4efe6;--mute:#a9b1c2;--paper:#f4efe6;--pink:#0c1424}
+/* 2026-10-27 지점장님 "D로 진행" — 라이트 블루 핀테크(3040) · 글씨 프리텐다드 굵게. 변수 이름 gold = 강조색(파랑) */
+:root{--bg:#f2f5fa;--bg2:#ffffff;--gold:#2b5cd6;--gold2:#2b5cd6;--line:#dde3ee;--ink:#16213a;--mute:#5a6680;--paper:#ffffff;--pink:#16213a}
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:'Pretendard',-apple-system,'Malgun Gothic',sans-serif;word-break:keep-all;overflow-wrap:break-word;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
@@ -196,6 +196,29 @@ footer{padding:28px 0 120px;border-top:1px solid var(--line);font-size:12px;colo
 .warn li.key b{color:var(--gold2)}
 .warn li.key span{color:var(--gold2)}
 .warn li.key+li{border-top:0}
+/* D 테마: 밝은 바탕에 맞춘 덮어쓰기 */
+.sf,#hero h1,.h2,.pcard .tot,.free .amt,.free .amt small,.step .no{font-family:'Pretendard',sans-serif;font-weight:800;letter-spacing:-.03em}
+.free .amt{font-size:clamp(64px,19vw,104px)} .step .no{font-size:30px}
+#hero .bg{filter:grayscale(.2)}
+#hero .bg::after{background:linear-gradient(180deg,rgba(242,245,250,.93) 0%,rgba(242,245,250,.5) 34%,rgba(242,245,250,.8) 58%,#f2f5fa 84%)}
+#hero .sub{color:var(--mute)} .free .lb b,.for b,.warn li.key{color:var(--ink)}
+.warn{color:var(--ink)} .notice{color:var(--mute)}
+#money{background:var(--bg)} .pcard{border-color:var(--line);background:var(--bg2)}
+.warn li.key{background:#eaf0fd}
+.apbox{background:#16213a;color:#fff} .call{color:#c9d2e6}
+.submit{background:var(--gold);color:#fff}
+.dock{background:linear-gradient(transparent,rgba(242,245,250,.94) 40%)}
+.dock a{background:var(--gold);color:#fff;box-shadow:0 8px 20px rgba(43,92,214,.28)} .dock a small{color:#dbe5ff}
+footer{color:var(--mute)}
+.sh-brand,.sl-n{color:var(--gold)} .sh-bar{background:#e3e9f4} .sh-bar i{background:var(--gold)}
+.fld input[type=text],.fld input[type=tel],.checks label{border-color:#d3dbe9}
+.fld input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(43,92,214,.2)}
+.checks i{border-color:#9fb4e8}
+.checks input:checked~i{background:var(--gold);border-color:var(--gold);box-shadow:none}
+.checks input:checked~i::after{border-color:#fff}
+.checks label:has(input:checked){border-color:var(--gold);background:#eaf0fd}
+.prv{background:#eef2f9}
+#done button{color:var(--ink)} #done #doneShare{color:var(--gold)}
 </style>
 </head>
 <body>
