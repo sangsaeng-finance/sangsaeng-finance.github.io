@@ -228,9 +228,16 @@ footer{padding:28px 0 120px;border-top:1px solid var(--line);font-size:12px;colo
 /* D 테마: 밝은 바탕에 맞춘 덮어쓰기 */
 .sf,#hero h1,.h2,.pcard .tot,.free .amt,.free .amt small,.step .no{font-family:'Pretendard',sans-serif;font-weight:800;letter-spacing:-.03em}
 .free .amt{font-size:clamp(64px,19vw,104px)} .step .no{font-size:30px}
-#hero .bg{filter:grayscale(.2)}
-#hero .bg::after{background:linear-gradient(180deg,rgba(242,245,250,.93) 0%,rgba(242,245,250,.5) 34%,rgba(242,245,250,.8) 58%,#f2f5fa 84%)}
-#hero .sub{color:var(--mute)} .free .lb b,.for b,.warn li.key{color:var(--ink)}
+/* 10/27 "사진이 5번처럼 선명하게" — 첫 화면만 사진을 살리고 아래쪽 남색 그라데이션 위에 흰 글씨 */
+#hero .bg{filter:none}
+#hero .bg::after{background:linear-gradient(180deg,rgba(22,33,58,.35) 0%,rgba(22,33,58,0) 22%,rgba(22,33,58,.2) 48%,rgba(22,33,58,.9) 76%,#16213a 100%)}
+#hero,#hero .top{color:#fff}
+#hero .top .co{color:#cfdcff}
+#hero .who-for,#hero h1 b,#hero .free .amt{color:#8fb0ff}
+#hero .sub{color:#e6ebf5}
+#hero .free .lb b,#hero .free .amt small{color:#fff}
+#hero .free .lb span{color:#c5cee0}
+.for b,.warn li.key{color:var(--ink)}
 .warn{color:var(--ink)} .notice{color:var(--mute)}
 #money{background:var(--bg)} .pcard{border-color:var(--line);background:var(--bg2)}
 .warn li.key{background:#eaf0fd}
