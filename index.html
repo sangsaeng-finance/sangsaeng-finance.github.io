@@ -204,10 +204,26 @@ footer{padding:28px 0 120px;border-top:1px solid var(--line);font-size:12px;colo
 .warn li.key+li{border-top:0}
 /* 10/27 "날짜는 밖으로" — 신청 칸에서 과정을 먼저 고른다 */
 .days{display:grid;gap:10px}
-.day{display:block;width:100%;padding:16px 14px;border:0;border-radius:14px;background:var(--gold);color:#fff;cursor:pointer;text-align:center}
-.day b{display:block;font-size:17px;font-weight:800}
-.day span{display:block;margin-top:2px;font-size:14px;color:#dbe5ff;font-weight:600}
-.day:active{transform:scale(.99)}
+.day{display:flex;align-items:center;gap:12px;width:100%;padding:16px 14px;border:2px solid transparent;border-radius:14px;background:#fff;color:var(--ink);cursor:pointer;text-align:left;transition:border-color .2s,transform .15s}
+.day .rd{flex:none;position:relative;width:26px;height:26px;border-radius:50%;border:2px solid #9fb4e8;background:#fff;transition:background .2s,border-color .2s}
+.day .rd::after{content:'';position:absolute;left:8px;top:3px;width:6px;height:12px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg) scale(0);transition:transform .2s}
+.day .dt{flex:1;min-width:0}
+.day b{display:block;font-size:16.5px;font-weight:800}
+.day b{white-space:nowrap}
+.day .dt span{display:block;margin-top:2px;font-size:14px;color:var(--mute);font-weight:600;white-space:nowrap}
+.day .dt .py{color:var(--gold);font-weight:800}
+.day .go{flex:none;font-style:normal;font-size:26px;line-height:1;font-weight:400;color:#9fb4e8}
+.apbox{padding:22px 14px}
+.call{text-wrap:balance}
+.day:active{transform:scale(.98)}
+.day.on{border-color:var(--gold)}
+.day.on .rd{background:var(--gold);border-color:var(--gold)}
+.day.on .rd::after{transform:rotate(45deg) scale(1)}
+/* 신청 칸이 보이면 동그라미가 한 번씩 눌러 보라고 깜빡인다 */
+.days.hint .day .rd{animation:ring 1.4s ease-out 2}
+.days.hint .day:nth-child(2) .rd{animation-delay:.25s}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(43,92,214,.45)}100%{box-shadow:0 0 0 12px rgba(43,92,214,0)}}
+@media (prefers-reduced-motion:reduce){.days.hint .day .rd{animation:none}}
 .sl-n{font-size:14px;letter-spacing:0}
 /* D 테마: 밝은 바탕에 맞춘 덮어쓰기 */
 .sf,#hero h1,.h2,.pcard .tot,.free .amt,.free .amt small,.step .no{font-family:'Pretendard',sans-serif;font-weight:800;letter-spacing:-.03em}
@@ -333,8 +349,8 @@ footer{color:var(--mute)}
   <div class="apbox">
     <p class="apsub">참석할 과정을 먼저 골라 주세요</p>
     <div class="days">
-      <button class="day" type="button" data-open data-day="목·금(11/5~6)"><b>11월 5~6일 (목·금) 이틀</b><span>오후 2시~5시 · 지원금 10만원</span></button>
-      <button class="day" type="button" data-open data-day="토(11/7)"><b>11월 7일 (토) 하루</b><span>오전 10시~오후 1시 · 지원금 5만원</span></button>
+      <button class="day" type="button" data-open data-day="목·금(11/5~6)"><i class="rd" aria-hidden="true"></i><span class="dt"><b>목·금 이틀 과정</b><span>11월 5~6일 · 오후 2시~5시</span><span class="py">지원금 10만원</span></span><em class="go" aria-hidden="true">›</em></button>
+      <button class="day" type="button" data-open data-day="토(11/7)"><i class="rd" aria-hidden="true"></i><span class="dt"><b>토요일 하루 과정</b><span>11월 7일 · 오전 10시~오후 1시</span><span class="py">지원금 5만원</span></span><em class="go" aria-hidden="true">›</em></button>
     </div>
     <p class="call">신청하시면 담당자가 <b>직접 전화</b>로 안내드립니다</p>
   </div>
@@ -412,7 +428,9 @@ new IntersectionObserver(([e]) => dock.classList.toggle('hide', e.isIntersecting
 const sheet = $('#sheet'), slides = $('#slides'), bar = $('#shBar'); let step = 0;
 const DAYL = { '목·금(11/5~6)': '11월 5~6일 (목·금) 이틀 과정 · 지원금 10만원', '토(11/7)': '11월 7일 (토) 하루 과정 · 지원금 5만원' };
 const go = () => { bar.style.width = '100%'; };
-const openSheet = (e) => { if (e) e.preventDefault(); const d = e && e.currentTarget.dataset.day; if (!d) return; $('#i-day').value = d; $('#dayLabel').textContent = DAYL[d]; sheet.classList.add('open'); sheet.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden'; go(step); };
+const days = $('.days'); new IntersectionObserver(([e], o) => { if (e.isIntersecting) { days.classList.add('hint'); o.disconnect(); } }, { threshold: .6 }).observe(days);
+const openSheet = (e) => { if (e) e.preventDefault(); const btn = e && e.currentTarget, d = btn && btn.dataset.day; if (!d) return;
+  if (!btn.classList.contains('on')) { $$('.day').forEach(x => x.classList.toggle('on', x === btn)); setTimeout(() => openSheet({ preventDefault() {}, currentTarget: btn }), 280); return; } /* 고른 칸에 체크가 찍히는 걸 보여 주고 창을 연다 */ $('#i-day').value = d; $('#dayLabel').textContent = DAYL[d]; sheet.classList.add('open'); sheet.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden'; go(step); };
 const closeSheet = () => { sheet.classList.remove('open'); sheet.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; };
 $$('[data-open]').forEach(b => b.addEventListener('click', openSheet));
 $('#shClose').addEventListener('click', closeSheet);
