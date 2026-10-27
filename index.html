@@ -191,6 +191,11 @@ footer{padding:28px 0 120px;border-top:1px solid var(--line);font-size:12px;colo
 /* 일정표: 항목명 위, 내용 아래로 쌓아 가운데 */
 .info div{display:block;text-align:center}
 .info dt{padding:0 0 4px}
+/* 10/27 "강조해줘야지" — 목·금 이틀 조건 */
+.warn li.key{margin-bottom:6px;padding:16px 14px;border:1px solid var(--gold);border-radius:14px;background:rgba(201,169,106,.12);font-size:clamp(15px,4.4vw,18px);font-weight:800;color:#fff;line-height:1.55}
+.warn li.key b{color:var(--gold2)}
+.warn li.key span{color:var(--gold2)}
+.warn li.key+li{border-top:0}
 </style>
 </head>
 <body>
@@ -248,7 +253,7 @@ footer{padding:28px 0 120px;border-top:1px solid var(--line);font-size:12px;colo
     </div>
   </div>
   <ul class="warn">
-    <li>목·금은 <b>이틀 모두</b> 참석하셔야 지급됩니다. 하루만 오시면 지급되지 않습니다.</li>
+    <li class="key">목·금은 <b>이틀 모두</b> 참석하셔야 지급됩니다<br><span>하루만 오시면 지급되지 않습니다</span></li>
     <li>참석은 <b>목·금 이틀</b> 또는 <b>토요일 하루</b> 중 하나를 고릅니다.</li>
     <li>이수 지원금은 서명부 작성과 만족도 조사를 마친 분께 드립니다.</li>
   </ul>
