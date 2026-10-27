@@ -171,13 +171,26 @@ footer{padding:28px 0 120px;border-top:1px solid var(--line);font-size:12px;colo
 .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.1,1)}
 .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.dock,.sh,.slides{transition:none}}
-/* 2026-10-27 지점장님 "가운데로 정렬합시다" — 제목·첫 화면·카드는 가운데, 긴 안내 문장(점 목록)과 일정표는 읽기 쉽게 왼쪽 유지 */
+/* 2026-10-27 지점장님 "가운데로 정렬합시다"·"정렬을 맞춰야지" — 본문 전체 가운데, 제목·첫 화면 문구는 한 줄 */
 #hero .wrap,section .wrap{text-align:center}
+.top .co{text-align:right}
+.who-for,#hero .sub,.h2{white-space:nowrap}
+.who-for{font-size:clamp(13px,3.9vw,18px)}
+#hero .sub{font-size:clamp(14px,4.1vw,20px)}
+.h2{font-size:clamp(22px,6.4vw,36px)}
 .free{justify-content:center}
 .free .lb{text-align:left}
+.apsub{white-space:nowrap;font-size:clamp(13px,4vw,16px)}
+.for span{display:block;text-wrap:balance}
 .step{display:block;text-align:center}
 .step .no{display:block;margin-bottom:8px}
-.warn,.info{text-align:left}
+/* 안내 문장: 점 대신 가는 줄로 나눠 가운데 */
+.warn li{padding:12px 0;border-top:1px solid var(--line);text-wrap:balance}
+.warn li:first-child{border-top:0}
+.warn li::before{display:none}
+/* 일정표: 항목명 위, 내용 아래로 쌓아 가운데 */
+.info div{display:block;text-align:center}
+.info dt{padding:0 0 4px}
 </style>
 </head>
 <body>
@@ -185,11 +198,11 @@ footer{padding:28px 0 120px;border-top:1px solid var(--line);font-size:12px;colo
 <!-- ① 첫 화면 -->
 <section id="hero" aria-label="금융상생연수 소개">
   <div class="bg" role="img" aria-label="세미나실에서 강의를 듣는 모습"></div>
-  <div class="top"><span class="nm sf">금융상생연수</span><span class="co">협력<br>(주)컨설팅을 더하다 · 한림브릿지</span></div>
+  <div class="top"><span class="nm sf">금융상생연수</span><span class="co">(주)컨설팅을 더하다 · 한림브릿지</span></div>
   <div class="wrap">
-    <p class="who-for">금융권 진로를 꿈꾸는 분!<br>금융에 대해 궁금한 분!</p>
+    <p class="who-for">금융권 진로를 꿈꾸는 분 · 금융이 궁금한 분</p>
     <h1 class="sf">현직 금융인에게<br><b>직접 묻는</b> 금융강의</h1>
-    <p class="sub">강의 뒤 직무 적성 진단과<br><span class="nw">1:1 멘토링까지</span></p>
+    <p class="sub">강의 뒤 직무 적성 진단과 1:1 멘토링까지</p>
     <div class="free">
       <div class="amt">10<small>만원</small></div>
       <div class="lb"><b>참가비 무료</b>세미나 이수 지원금<br><span>최대 금액 · 선착순 마감</span></div>
@@ -200,7 +213,7 @@ footer{padding:28px 0 120px;border-top:1px solid var(--line);font-size:12px;colo
 <!-- ② 이런 분께 -->
 <section id="for"><div class="wrap">
   <p class="eyebrow">FOR YOU</p>
-  <h2 class="h2 sf">이런 분께<br><b>권합니다</b></h2>
+  <h2 class="h2 sf">이런 분께 <b>권합니다</b></h2>
   <div class="for">
     <div class="rv"><b>금융권 진로를 꿈꾸는 분</b><span>금융 일이 실제로 어떤지, 어떻게 시작하는지 궁금한 분</span></div>
     <div class="rv"><b>금융에 대해 궁금한 분</b><span>현직자에게 직접 묻고 답을 듣고 싶은 분</span></div>
@@ -212,7 +225,7 @@ footer{padding:28px 0 120px;border-top:1px solid var(--line);font-size:12px;colo
 <!-- ③ 진행 순서 -->
 <section id="program"><div class="wrap">
   <p class="eyebrow">PROGRAM</p>
-  <h2 class="h2 sf">이렇게<br><b>진행됩니다</b></h2>
+  <h2 class="h2 sf">이렇게 <b>진행됩니다</b></h2>
   <div class="step rv"><span class="no">01</span><h3>첫째 날 (목)</h3><p>돈을 부르는 돈의 구조<br>마인드 셋업<br><b>직무 적성 진단</b></p></div>
   <div class="step rv"><span class="no">02</span><h3>둘째 날 (금)</h3><p>비즈니스 금융<br>선배와의 대화<br><b>1:1 멘토링</b> (첫날 빠진 분은 이때 적성 진단)</p></div>
   <div class="step rv"><span class="no">03</span><h3>토요일 하루 과정</h3><p>돈을 부르는 돈의 구조<br>마인드 셋업 또는 비즈니스 금융<br>선배와의 대화<br><b>직무 적성 진단과 1:1 멘토링</b></p></div>
@@ -221,7 +234,7 @@ footer{padding:28px 0 120px;border-top:1px solid var(--line);font-size:12px;colo
 <!-- ④ 지원금 -->
 <section id="money"><div class="wrap">
   <p class="eyebrow">SUPPORT</p>
-  <h2 class="h2 sf">참가비는 무료,<br>이수 지원금은 <b>최대 10만원</b></h2>
+  <h2 class="h2 sf">이수 지원금 <b>최대 10만원</b></h2>
   <div class="pay">
     <div class="pcard rv">
       <p class="when">목·금 연속 참석 · 11월 5~6일</p>
@@ -277,7 +290,7 @@ footer{padding:28px 0 120px;border-top:1px solid var(--line);font-size:12px;colo
   <p class="eyebrow">FIRST-COME</p>
   <h2 class="h2 sf">선착순 <b>참석 신청</b></h2>
   <div class="apbox">
-    <p class="apsub">이름·연락처·참석 날짜만 고르면 <span class="nw"><b>30초</b>면 끝납니다</span></p>
+    <p class="apsub">이름·연락처·날짜만 고르면 <b>30초</b>면 끝</p>
     <button class="submit" type="button" data-open>참석 신청하기</button>
     <p class="call">신청하시면 담당자가 <b>직접 전화</b>로 안내드립니다</p>
   </div>
