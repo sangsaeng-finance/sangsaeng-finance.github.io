@@ -446,7 +446,7 @@ $('#h-set').value = (q.get('set') || '').slice(0, 80);
 
 const phone = $('#i-phone');
 phone.addEventListener('input', () => {
-  let d = phone.value.replace(/\D/g, '').slice(0, 11);
+  let d = phone.value.replace(/\D/g, ''); if (d.startsWith('010010')) d = d.slice(3); /* 미리 적힌 010- 뒤에 010부터 다시 치는 경우 (10/27 아이폰 시험에서 발견) */ d = d.slice(0, 11);
   phone.value = d.length > 7 ? d.slice(0, 3) + '-' + d.slice(3, 7) + '-' + d.slice(7) : d.length > 3 ? d.slice(0, 3) + '-' + d.slice(3) : d;
 });
 $('#moreBtn').addEventListener('click', e => { e.preventDefault(); const o = $('#prv').classList.toggle('open'); e.target.setAttribute('aria-expanded', o); });
