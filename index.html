@@ -228,13 +228,15 @@ footer{padding:28px 0 120px;border-top:1px solid var(--line);font-size:12px;colo
 /* D 테마: 밝은 바탕에 맞춘 덮어쓰기 */
 .sf,#hero h1,.h2,.pcard .tot,.free .amt,.free .amt small,.step .no{font-family:'Pretendard',sans-serif;font-weight:800;letter-spacing:-.03em}
 .free .amt{font-size:clamp(64px,19vw,104px)} .step .no{font-size:30px}
-/* 10/27 "사진이 5번처럼 선명하게" — 첫 화면만 사진을 살리고 아래쪽 남색 그라데이션 위에 흰 글씨 */
-#hero .bg{filter:none}
-#hero .bg::after{background:linear-gradient(180deg,rgba(22,33,58,.35) 0%,rgba(22,33,58,0) 22%,rgba(22,33,58,.2) 48%,rgba(22,33,58,.9) 76%,#16213a 100%)}
-#hero,#hero .top{color:#fff}
+/* 10/27 "사진에 글자가 겹쳐" → 위는 사진(덮개 없음), 아래 남색 바탕에 글씨 — 한 화면 안에서 */
+#hero{background:#16213a;justify-content:flex-start;color:#fff}
+#hero .top{position:static;order:-1;padding:calc(14px + env(safe-area-inset-top)) 20px 12px;color:#fff}
 #hero .top .co{color:#cfdcff}
+#hero .bg{position:relative;inset:auto;z-index:0;flex:none;height:clamp(180px,calc(100svh - 480px),44svh);filter:none;background-position:center 42%}
+#hero .bg::after{background:linear-gradient(180deg,rgba(22,33,58,0) 78%,#16213a 100%)}
+#hero .wrap{padding-top:18px}
+#hero .who-for{color:#cfdcff}
 #hero h1 b,#hero .free .amt{color:#8fb0ff}
-#hero .who-for{color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.45)}
 #hero .sub{color:#e6ebf5}
 #hero .free .lb b,#hero .free .amt small{color:#fff}
 #hero .free .lb span{color:#c5cee0}
