@@ -145,6 +145,13 @@ footer{padding:28px 0 120px;border-top:1px solid var(--line);font-size:12px;colo
 .checks input{position:absolute;opacity:0;pointer-events:none}
 .checks i{flex:none;width:26px;height:26px;border-radius:8px;border:2px solid #c9a96a;background:#fff}
 .checks.radio i{border-radius:50%}
+.checks.three{grid-template-columns:repeat(3,1fr)}
+.checks.three label{justify-content:center;gap:8px;padding:10px 8px}
+.checks.three i{width:22px;height:22px}
+.checks.three input:checked~i::after{width:6px;height:11px;margin:2px 0 0 6px}
+.lb-h{font-size:13px;font-weight:600;color:#5a6274;margin-left:4px}
+.bprev{min-height:18px;margin-top:6px;font-size:13.5px;font-weight:700;color:#1f6b3a}
+.bprev.no{color:#b3261e}
 .checks input:checked~i{background:#0c1424;border-color:#0c1424;box-shadow:inset 0 0 0 5px #0c1424}
 .checks input:checked~i::after{content:'';display:block;width:8px;height:14px;margin:2px 0 0 7px;border:solid var(--gold2);border-width:0 3px 3px 0;transform:rotate(45deg)}
 .checks label:has(input:checked){border-color:#0c1424;background:#ece5d6}
@@ -421,13 +428,24 @@ footer{color:var(--mute)}
           <div class="fld" id="w-phone"><label for="i-phone">연락처</label>
             <input type="tel" id="i-phone" name="phone" autocomplete="tel" inputmode="numeric" placeholder="010-0000-0000" value="010-" maxlength="13">
             <div class="err">010 포함 11자리를 적어 주세요</div></div>
+          <div class="fld" id="w-birth"><label for="i-birth">생년월일 <small class="lb-h">연도나 나이만 적어도 됩니다</small></label>
+            <input type="text" id="i-birth" inputmode="numeric" autocomplete="bday" placeholder="예) 1990 · 900315 · 나이 35" maxlength="10">
+            <p class="bprev" id="bprev"></p>
+            <div class="err">생년월일(연도·나이)을 다시 확인해 주세요</div></div>
+          <div class="fld" id="w-int"><span class="lb">금융의 관심도</span>
+            <div class="checks radio three">
+              <label><input type="radio" name="interest" value="상"><i></i>상</label>
+              <label><input type="radio" name="interest" value="중"><i></i>중</label>
+              <label><input type="radio" name="interest" value="하"><i></i>하</label>
+            </div>
+            <div class="err">하나를 골라 주세요</div></div>
           <button class="submit" type="submit">동의하고 참석 신청하기</button>
           <div class="fld" id="w-agree">
-            <input type="hidden" id="i-agree"><p class="agree">신청하면 개인정보 수집·이용에 동의하게 됩니다<br>(이름·연락처·참석 과정 · 연수 안내 연락 · 1년 보관) <button type="button" class="more" id="moreBtn" aria-expanded="false">내용보기</button></p>
+            <input type="hidden" id="i-agree"><p class="agree">신청하면 개인정보 수집·이용에 동의하게 됩니다<br>(이름·연락처·생년월일·금융 관심도·참석 과정 · 연수 안내 연락 · 1년 보관) <button type="button" class="more" id="moreBtn" aria-expanded="false">내용보기</button></p>
             <div class="prv" id="prv">
               <!-- 개인정보 보호법 제15조 제2항: ①목적 ②항목 ③보유·이용 기간 ④동의 거부 권리와 불이익 -->
               <strong>수집·이용 목적</strong> 금융상생연수 참석 신청 접수, 참석 확인과 행사 안내(전화·문자), 담당자 안내 연락<br>
-              <strong>수집 항목</strong> 이름, 연락처, 참석 과정<br>
+              <strong>수집 항목</strong> 이름, 연락처, 생년월일, 금융 관심도, 참석 과정<br>
               <strong>보유·이용 기간</strong> 신청일로부터 1년. 기간이 지나면 지체 없이 파기합니다<br>
               <strong>동의 거부 권리</strong> 동의하지 않으실 수 있습니다. 다만 동의하지 않으시면 신청이 접수되지 않습니다<br>
               <strong>현장 안내</strong> 행사장에서 서명부 작성과 개인정보 동의 절차가 한 번 더 있습니다
@@ -485,7 +503,21 @@ const q = new URLSearchParams(location.search);
 $('#h-ad').value = (q.get('ad') || '').slice(0, 80);
 $('#h-set').value = (q.get('set') || '').slice(0, 80);
 
+/* 생년월일 — 커리어랩 세미나 신청서(careerlab_seminar.html)와 같은 해석: 4자리 연도·2자리(연도/나이)·6·8자리, 쓰다 만 숫자는 막는다 */
+const CY = new Date().getFullYear(), okY = (y) => y >= 1950 && y <= 2012;
+function parseBirth(t) { const d = String(t).replace(/\D/g, ''); const full = (y, m, dd) => { const x = new Date(y, m - 1, dd); return okY(y) && x.getMonth() === m - 1 && x.getDate() === dd ? { v: `${y}-${String(m).padStart(2, '0')}-${String(dd).padStart(2, '0')}`, show: `${y}년 ${m}월 ${dd}일생` } : null; };
+  if (d.length === 8) return full(+d.slice(0, 4), +d.slice(4, 6), +d.slice(6));
+  if (d.length === 6) { const yy = +d.slice(0, 2); return full(yy <= 12 ? 2000 + yy : 1900 + yy, +d.slice(2, 4), +d.slice(4)); }
+  if (d.length === 4) { const y = +d; return okY(y) ? { v: String(y), show: y + '년생' } : null; }
+  if (d.length === 2) { const n = +d; if (n >= 15 && n <= 59) { const y = CY - n; return { v: String(y), show: `나이 ${n}세 → ${y}년생` }; } const y = n >= 60 ? 1900 + n : n <= 12 ? 2000 + n : 0; return okY(y) ? { v: String(y), show: y + '년생' } : null; }
+  return null; }
+const bIn = $('#i-birth'), bPrev = $('#bprev');
+bIn.addEventListener('input', () => { const p = parseBirth(bIn.value), n = bIn.value.replace(/\D/g, '').length, typing = n < 2 || n === 3 || n === 5 || n === 7;
+  bPrev.className = 'bprev' + (p || typing ? '' : ' no'); bPrev.textContent = p ? '→ ' + p.show : typing ? '' : '다시 확인해 주세요'; });
+
 const phone = $('#i-phone');
+/* 고치는 순간 빨간 안내를 지운다 */
+$('#f').addEventListener('input', e => { const w = e.target.closest('.fld'); if (w) w.classList.remove('bad'); });
 phone.addEventListener('input', () => {
   let d = phone.value.replace(/\D/g, ''); if (d.startsWith('010010')) d = d.slice(3); /* 미리 적힌 010- 뒤에 010부터 다시 치는 경우 (10/27 아이폰 시험에서 발견) */ d = d.slice(0, 11);
   phone.value = d.length > 7 ? d.slice(0, 3) + '-' + d.slice(3, 7) + '-' + d.slice(7) : d.length > 3 ? d.slice(0, 3) + '-' + d.slice(3) : d;
@@ -497,9 +529,10 @@ $('#f').addEventListener('submit', async e => {
   const f = e.target, v = {
     name: f.name.value.trim(), phone: phone.value.replace(/\D/g, ''),
     day: $('#i-day').value, status: '',
+    birth: (parseBirth(bIn.value) || {}).v || '', interest: (f.querySelector('input[name=interest]:checked') || {}).value || '',
     agree: true, ad: $('#h-ad').value, set: $('#h-set').value
   };
-  const checks = { 'w-name': nameOk(v.name), 'w-phone': /^010\d{8}$/.test(v.phone) };
+  const checks = { 'w-name': nameOk(v.name), 'w-phone': /^010\d{8}$/.test(v.phone), 'w-birth': !!v.birth, 'w-int': !!v.interest };
   let first = null;
   for (const id in checks) { $('#' + id).classList.toggle('bad', !checks[id]); if (!checks[id] && !first) first = id; }
   if (first || !v.day) return;
@@ -508,7 +541,7 @@ $('#f').addEventListener('submit', async e => {
   const tag = [v.ad && '소재 ' + v.ad, v.set && '타깃 ' + v.set].filter(Boolean).join(' / ');
   const withWho = (q.get('with') || '').replace(/[\[\]]/g, '').slice(0, 30);
   const params = { user_name: v.name, user_phone: v.phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'),
-    user_job: '[금융상생연수] ' + v.day, user_time: '참석 ' + v.day,
+    user_job: '[금융상생연수] ' + v.day + ' · ' + v.birth + ' · 금융 관심 ' + v.interest, user_time: '참석 ' + v.day,
     send_time: new Date().toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) + '  [금융상생연수 신청]' + (tag ? '  [' + tag + ']' : '') + (withWho ? '  [동행: ' + withWho + ']' : ''),
     ad_id: v.ad, ad_set: v.set };
   /* 신청은 서버로 — 9명 순번 자동 배분 + 지점장님 메일(2026-10-27). 서버가 안 받으면 예전 메일 통로로 한 번 더 */
@@ -516,7 +549,7 @@ $('#f').addEventListener('submit', async e => {
   catch (e1) { try { await emailjs.send('service_x66ocbi', 'template_7b1xztu', params, { publicKey: 'tRnVoZ96PmFbQAoK9' }); }
   catch (err) { btn.disabled = false; btn.textContent = label; alert('신청이 전송되지 않았습니다. 잠시 뒤 다시 눌러 주세요. (' + (err.status || err.text || err.message || '오류') + ')'); return; } }
   if (typeof fbq === 'function') fbq('track', 'CompleteRegistration', { content_name: '금융상생연수_신청', ad_id: v.ad, ad_set: v.set }, { eventID: 'reg_' + Date.now() });
-  btn.disabled = false; btn.textContent = label; f.reset(); phone.value = '010-'; lastWho = v.name + '·' + v.phone.slice(-4); closeSheet();
+  btn.disabled = false; btn.textContent = label; f.reset(); phone.value = '010-'; bPrev.textContent = ''; lastWho = v.name + '·' + v.phone.slice(-4); closeSheet();
   $('#done').classList.add('show');
   $('#doneClose').focus();
 });
